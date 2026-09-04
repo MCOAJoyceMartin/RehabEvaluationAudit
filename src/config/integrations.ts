@@ -1,37 +1,52 @@
 /**
  * integrations.ts
  * =================
- * Configuration for the "Save to OneDrive" relay (see docs/POWER_AUTOMATE_SETUP.md).
+ * Configuration for the "Save to OneDrive" button (see docs/POWER_AUTOMATE_SETUP.md).
  *
- * This app is a static site (GitHub Pages) with no backend of its own, so it
- * cannot call the Microsoft Graph API directly without a real OAuth app
- * registration. Instead, "Save to OneDrive" POSTs the export report to a
- * Power Automate flow's HTTP-trigger URL. That flow (built and owned by
- * Joyce, running under her own already-authorized Microsoft 365 connection)
- * is responsible for emailing the report to a purehlth.com mailbox and/or
- * saving it directly to OneDrive — this app never talks to Microsoft
- * directly and never handles any Microsoft credentials.
+ * This app is a static site (GitHub Pages) with no backend of its own. Two
+ * approaches were tried and rejected before this one:
+ *   1. POSTing straight to a Power Automate HTTP-trigger flow — Joyce's
+ *      Power Platform environment only offers the newer trigger type,
+ *      which requires Azure AD sign-in for every caller (no anonymous
+ *      option), so a plain client-side POST can't authenticate.
+ *   2. A mailto: email draft the user attaches a file to by hand — works,
+ *      but requires a manual "attach the file, then send" step every time,
+ *      which is easy to forget (a mailto: link cannot include an
+ *      attachment — that's a browser security restriction, not something
+ *      any code change can work around).
+ *
+ * Final approach: the button builds a PDF client-side and POSTs it to a
+ * Google Apps Script "Web App" endpoint that Joyce deploys once, under an
+ * account she controls (puresponseai@gmail.com). Apps Script *can* expose
+ * a truly anonymous, no-login HTTP endpoint (unlike Power Automate's newer
+ * trigger type), and — running under that Google account — calls Gmail's
+ * own send function to email the PDF to ONEDRIVE_SAVE_EMAIL automatically,
+ * no draft, no manual attach step. A Power Automate flow Joyce owns then
+ * watches that mailbox ("When a new email arrives (V3)", filtered to mail
+ * from the script's Gmail account) and files the attachment into OneDrive.
+ * See docs/POWER_AUTOMATE_SETUP.md for the full setup (both the Apps
+ * Script side and the Power Automate side).
  *
  * IMPORTANT — this is a public, unauthenticated static site:
- * Both values below are baked into the built JS bundle at build time (via
- * Vite's `import.meta.env`) and are therefore visible to anyone who opens
- * browser dev tools or views the deployed source — there is no way to hide
- * a secret in a client-only app without adding a real backend.
- * `RELAY_SHARED_SECRET` is a *lightweight abuse deterrent* (checked by a
- * Condition step in the Power Automate flow before it does anything), not
- * real security — it stops casual/accidental hits, not a motivated attacker
- * who reads the bundle. Do not rely on it to keep PHI safe; the flow itself
- * is the safety boundary.
+ * SAVE_SCRIPT_URL and SAVE_SCRIPT_SECRET are baked into the built JS bundle
+ * at build time (via Vite's `import.meta.env`) and are therefore visible to
+ * anyone who opens browser dev tools or views the deployed source — same
+ * as any client-only app. SAVE_SCRIPT_SECRET is a lightweight abuse
+ * deterrent (checked at the top of the Apps Script before it does
+ * anything), not real security — it stops casual/accidental hits on a
+ * guessed or leaked URL, not a motivated attacker who reads the bundle.
  *
  * Set these at build time via a `.env.local` file (gitignored — see
  * `.env.example`) for local builds, or via GitHub Actions repository
- * secrets (`ONEDRIVE_RELAY_URL` / `ONEDRIVE_RELAY_SECRET`) for the
- * GitHub Pages deploy, wired into `.github/workflows/deploy.yml`.
+ * secrets (`SAVE_SCRIPT_URL` / `SAVE_SCRIPT_SECRET`) for the GitHub Pages
+ * deploy, wired into `.github/workflows/deploy.yml`.
  */
 
-export const ONEDRIVE_RELAY_URL: string = import.meta.env.VITE_ONEDRIVE_RELAY_URL ?? "";
-export const ONEDRIVE_RELAY_SECRET: string = import.meta.env.VITE_ONEDRIVE_RELAY_SECRET ?? "";
+export const ONEDRIVE_SAVE_EMAIL = "joyce@purehlth.com";
 
-export function isOneDriveRelayConfigured(): boolean {
-  return ONEDRIVE_RELAY_URL.trim().length > 0;
+export const SAVE_SCRIPT_URL: string = import.meta.env.VITE_SAVE_SCRIPT_URL ?? "";
+export const SAVE_SCRIPT_SECRET: string = import.meta.env.VITE_SAVE_SCRIPT_SECRET ?? "";
+
+export function isSaveToOneDriveConfigured(): boolean {
+  return SAVE_SCRIPT_URL.trim().length > 0;
 }

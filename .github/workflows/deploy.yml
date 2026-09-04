@@ -36,6 +36,13 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Set these two as repository secrets (Settings → Secrets and
+          # variables → Actions) to enable the "Save to OneDrive" button.
+          # See docs/POWER_AUTOMATE_SETUP.md. Leaving them unset is fine —
+          # the button simply doesn't render if no script URL is configured.
+          VITE_SAVE_SCRIPT_URL: ${{ secrets.SAVE_SCRIPT_URL }}
+          VITE_SAVE_SCRIPT_SECRET: ${{ secrets.SAVE_SCRIPT_SECRET }}
 
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3

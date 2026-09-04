@@ -100,8 +100,8 @@ export function AuditCriterionCard({ result, override, onOverrideScore, onReview
             <div className="reviewer-override__body">
               <p className="reviewer-override__disclaimer">
                 Overrides and notes are kept only in this browser tab for the current session — refreshing the page or
-                closing the tab clears them. Use <strong>Export Audit</strong> or <strong>Print Audit</strong> to keep
-                a permanent record of any override before you close this session.
+                closing the tab clears them. Use <strong>Print Audit</strong> to keep a permanent record of any
+                override before you close this session.
               </p>
               <label>
                 Override score

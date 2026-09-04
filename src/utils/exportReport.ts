@@ -87,17 +87,23 @@ function disciplineSection(result: RehabAuditResult, overrides: Record<string, R
 
   return `
   <h1>${esc(therapyEpisode.discipline)} Audit</h1>
-  <div class="header-grid">
-    <div><strong>Patient:</strong> ${esc(patient.name)}</div>
-    <div><strong>MRN:</strong> ${esc(patient.mrn)}</div>
-    <div><strong>Facility:</strong> ${esc(patient.facility)}</div>
-    <div><strong>Discipline:</strong> ${esc(therapyEpisode.discipline)}</div>
-    <div><strong>Evaluator:</strong> ${esc(therapyEpisode.evaluator)}</div>
-    <div><strong>Evaluation DOS:</strong> ${esc(therapyEpisode.evaluationDOS)}</div>
-    <div><strong>Completed:</strong> ${esc(therapyEpisode.completionDate)}</div>
-    <div><strong>Certification Period:</strong> ${esc(therapyEpisode.certificationStart)} – ${esc(therapyEpisode.certificationEnd)}</div>
-    <div><strong>Payer:</strong> ${esc(patient.payer)}</div>
-  </div>
+  <table class="header-table">
+    <tr>
+      <td><strong>Patient:</strong> ${esc(patient.name)}</td>
+      <td><strong>MRN:</strong> ${esc(patient.mrn)}</td>
+      <td><strong>Facility:</strong> ${esc(patient.facility)}</td>
+    </tr>
+    <tr>
+      <td><strong>Discipline:</strong> ${esc(therapyEpisode.discipline)}</td>
+      <td><strong>Evaluator:</strong> ${esc(therapyEpisode.evaluator)}</td>
+      <td><strong>Evaluation DOS:</strong> ${esc(therapyEpisode.evaluationDOS)}</td>
+    </tr>
+    <tr>
+      <td><strong>Completed:</strong> ${esc(therapyEpisode.completionDate)}</td>
+      <td><strong>Certification Period:</strong> ${esc(therapyEpisode.certificationStart)} – ${esc(therapyEpisode.certificationEnd)}</td>
+      <td><strong>Payer:</strong> ${esc(patient.payer)}</td>
+    </tr>
+  </table>
 
   <h2>Overall Score</h2>
   <p class="score">${totals.earned} / ${totals.possible} (${totals.percentage}%)</p>
@@ -113,7 +119,15 @@ function disciplineSection(result: RehabAuditResult, overrides: Record<string, R
 
   <h2>Audit Criteria</h2>
   <table>
-    <thead><tr><th>Section</th><th>Criterion</th><th>Score</th><th>Status</th><th>Auditor Comment</th><th>Recommendation</th><th>Reviewer Override</th></tr></thead>
+    <thead><tr>
+      <th style="width:9%">Section</th>
+      <th style="width:11%">Criterion</th>
+      <th style="width:6%">Score</th>
+      <th style="width:9%">Status</th>
+      <th style="width:29%">Auditor Comment</th>
+      <th style="width:24%">Recommendation</th>
+      <th style="width:12%">Reviewer Override</th>
+    </tr></thead>
     <tbody>${criteriaRows}</tbody>
   </table>
 
@@ -183,10 +197,21 @@ export function buildExportHtml(report: EpisodeAuditReport, overrides: Record<st
   body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
   h1 { font-size: 1.5rem; border-bottom: 2px solid #333; padding-bottom: 0.4rem; }
   h2 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid #ccc; padding-bottom: 0.2rem; }
-  table { border-collapse: collapse; width: 100%; margin-top: 0.5rem; font-size: 0.85rem; }
-  th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; vertical-align: top; }
+  /* table-layout: fixed + break-word keeps every column strictly inside
+     the table's own 100%-of-page width — without it, a long unbroken
+     run of text (a paragraph-length Auditor Comment, say) can force the
+     browser to render the table wider than its container, which silently
+     runs the rightmost column(s) off the edge of the PDF page. */
+  table { border-collapse: collapse; table-layout: fixed; width: 100%; margin-top: 0.5rem; font-size: 0.85rem; }
+  th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; vertical-align: top; overflow-wrap: break-word; }
   th { background: #f0f0f0; }
-  .header-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem 1.5rem; font-size: 0.9rem; }
+  /* A plain <table>, not CSS Grid/Flexbox — html2canvas (used for the PDF
+     export) has known, longstanding issues rendering grid/flex layouts
+     (rows collapsing to zero height or overlapping each other), but
+     renders ordinary tables reliably. Don't switch this back to a div
+     grid without testing the PDF output, not just the on-screen view. */
+  .header-table { font-size: 0.9rem; margin-top: 0.5rem; }
+  .header-table td { border: none; padding: 2px 1.5rem 2px 0; }
   .score { font-size: 2rem; font-weight: bold; }
   .disclaimer { font-size: 0.8rem; font-style: italic; color: #444; border: 1px solid #ccc; padding: 0.6rem; margin-top: 1rem; }
   hr { margin: 2.5rem 0; border: none; border-top: 3px double #999; }
