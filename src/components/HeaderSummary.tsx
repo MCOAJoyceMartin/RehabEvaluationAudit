@@ -1,7 +1,11 @@
+import { useMemo } from "react";
 import type { RehabAuditResult } from "../types/audit";
+import type { ReviewerOverride } from "../state/reviewerOverrides";
+import { computeEffectiveTotals, totalsWereAdjusted } from "../engine/audit/recalculateTotals";
 
 interface Props {
   result: RehabAuditResult;
+  overrides: Record<string, ReviewerOverride>;
 }
 
 const DISCIPLINE_LABEL: Record<string, string> = {
@@ -10,8 +14,11 @@ const DISCIPLINE_LABEL: Record<string, string> = {
   SLP: "Speech-Language Pathology",
 };
 
-export function HeaderSummary({ result }: Props) {
-  const { patient, therapyEpisode, totals } = result;
+export function HeaderSummary({ result, overrides }: Props) {
+  const { patient, therapyEpisode } = result;
+  const aiTotals = result.totals;
+  const totals = useMemo(() => computeEffectiveTotals(result, overrides), [result, overrides]);
+  const adjusted = useMemo(() => totalsWereAdjusted(aiTotals, totals), [aiTotals, totals]);
   const passCount = totals.passed;
   const partialCount = totals.partial;
   const failCount = totals.failed;
@@ -55,6 +62,13 @@ export function HeaderSummary({ result }: Props) {
           )}
         </div>
       </div>
+
+      {adjusted && (
+        <p className="header-summary__override-note">
+          Recalculated after reviewer overrides. Original AI-computed score: {aiTotals.earned} / {aiTotals.possible} ({aiTotals.percentage}%),
+          Pass {aiTotals.passed} · Partial {aiTotals.partial} · Fail {aiTotals.failed} · Unable to Validate {aiTotals.unableToValidate}.
+        </p>
+      )}
 
       {totals.externalValidationCriteriaCount > 0 && (
         <p className="header-summary__external-note">

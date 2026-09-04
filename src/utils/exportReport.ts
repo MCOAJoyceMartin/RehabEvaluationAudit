@@ -1,18 +1,22 @@
 import type { EpisodeAuditReport, RehabAuditResult } from "../types/audit";
 import type { ReviewerOverride } from "../state/reviewerOverrides";
 import { overrideKey } from "../state/reviewerOverrides";
+import { computeEffectiveTotals, getEffectiveCriterion, totalsWereAdjusted } from "../engine/audit/recalculateTotals";
 
 function esc(v: unknown): string {
   return String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
 }
 
 function disciplineSection(result: RehabAuditResult, overrides: Record<string, ReviewerOverride>): string {
-  const { patient, therapyEpisode, totals } = result;
+  const { patient, therapyEpisode } = result;
+  const aiTotals = result.totals;
+  const totals = computeEffectiveTotals(result, overrides);
+  const adjusted = totalsWereAdjusted(aiTotals, totals);
 
   const criteriaRows = result.audit
     .map((a) => {
       const ov = overrides[overrideKey(result.discipline, a.criterionId)];
-      const finalScore = ov?.overriddenScore ?? a.score;
+      const eff = getEffectiveCriterion(a, ov);
       return `<tr>
         <td>${esc(a.section)}</td>
         <td>${esc(a.criterion)}</td>
@@ -20,7 +24,11 @@ function disciplineSection(result: RehabAuditResult, overrides: Record<string, R
         <td>${esc(a.status.replace(/_/g, " "))}</td>
         <td>${esc(a.auditorComment)}</td>
         <td>${esc(a.recommendation)}</td>
-        <td>${ov ? `${esc(finalScore ?? "—")}${ov.reviewerNote ? ` — ${esc(ov.reviewerNote)}` : ""}${ov.marked ? " (Reviewed)" : ""}` : "—"}</td>
+        <td>${
+          ov
+            ? `${esc(eff.score ?? "—")}${eff.isOverridden ? ` — ${esc(eff.status.replace(/_/g, " "))}` : ""}${ov.reviewerNote ? ` — ${esc(ov.reviewerNote)}` : ""}${ov.marked ? " (Reviewed)" : ""}`
+            : "—"
+        }</td>
       </tr>`;
     })
     .join("\n");
@@ -108,6 +116,7 @@ function disciplineSection(result: RehabAuditResult, overrides: Record<string, R
   <h2>Overall Score</h2>
   <p class="score">${totals.earned} / ${totals.possible} (${totals.percentage}%)</p>
   <p>Pass: ${totals.passed} · Partial: ${totals.partial} · Fail: ${totals.failed} · Unable to Validate: ${totals.unableToValidate}${totals.pendingRubricConfirmationCriteriaCount > 0 ? ` · Pending Rubric Confirmation: ${totals.pendingRubricConfirmationCriteriaCount}` : ""}</p>
+  ${adjusted ? `<p class="override-note">Recalculated after reviewer overrides. Original AI-computed score: ${aiTotals.earned} / ${aiTotals.possible} (${aiTotals.percentage}%), Pass ${aiTotals.passed} · Partial ${aiTotals.partial} · Fail ${aiTotals.failed} · Unable to Validate ${aiTotals.unableToValidate}.</p>` : ""}
   ${totals.externalValidationCriteriaCount > 0 ? `<p>External Validation Pending: ${totals.externalValidationCriteriaCount} criterion / ${totals.externalValidationOpportunity} points (excluded from the score above).</p>` : ""}
   ${totals.pendingRubricConfirmationCriteriaCount > 0 ? `<p>Pending Rubric Confirmation: ${totals.pendingRubricConfirmationCriteriaCount} criterion / ${totals.pendingRubricConfirmationOpportunity} points (excluded from the score above; the rubric rule itself is not yet defined).</p>` : ""}
 
@@ -213,6 +222,7 @@ export function buildExportHtml(report: EpisodeAuditReport, overrides: Record<st
   .header-table { font-size: 0.9rem; margin-top: 0.5rem; }
   .header-table td { border: none; padding: 2px 1.5rem 2px 0; }
   .score { font-size: 2rem; font-weight: bold; }
+  .override-note { font-size: 0.8rem; color: #444; background: #f0eefc; padding: 0.5rem 0.7rem; border-radius: 6px; }
   .disclaimer { font-size: 0.8rem; font-style: italic; color: #444; border: 1px solid #ccc; padding: 0.6rem; margin-top: 1rem; }
   hr { margin: 2.5rem 0; border: none; border-top: 3px double #999; }
   @media print { body { margin: 0; } hr { page-break-after: always; border: none; } }

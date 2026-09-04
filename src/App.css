@@ -150,6 +150,7 @@
 .badge--confidence-high { background: #e6f4ea; color: var(--pass); }
 .badge--confidence-medium { background: var(--partial-bg); color: var(--partial); }
 .badge--confidence-low { background: var(--fail-bg); color: var(--fail); }
+.badge--overridden { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
 
 /* ---- Document classification ---- */
 .doc-classification__strip { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.5rem 0; }
@@ -254,6 +255,10 @@
 .header-summary__pending-note {
   margin-top: 0.5rem; font-size: 0.8rem; color: var(--pending, #4a56b8);
   background: var(--pending-bg, #eef1fb); padding: 0.5rem 0.75rem; border-radius: 6px;
+}
+.header-summary__override-note {
+  margin-top: 0.5rem; font-size: 0.8rem; color: var(--accent);
+  background: var(--accent-bg); padding: 0.5rem 0.75rem; border-radius: 6px;
 }
 
 /* ---- Document classification: discipline tag ---- */

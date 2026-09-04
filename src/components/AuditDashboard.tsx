@@ -78,7 +78,7 @@ export function AuditDashboard({
     <div className="audit-dashboard">
       <DisclaimerBanner />
       <DisciplineTabs disciplines={disciplines} active={result.discipline} onSelect={onSelectDiscipline} />
-      <HeaderSummary result={result} />
+      <HeaderSummary result={result} overrides={overrides} />
       <DocumentClassificationStrip boundaries={report.episodeBoundaries} activeDiscipline={result.discipline} onJumpToPage={onJumpToPage} />
       <TimelinePanel timeline={result.timeline} onJumpToPage={onJumpToPage} />
       <FunctionalChangeCard rows={result.functionalChange} />

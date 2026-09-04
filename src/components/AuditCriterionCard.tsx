@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { AuditCriterionResult } from "../types/audit";
 import type { ReviewerOverride } from "../state/reviewerOverrides";
+import { getEffectiveCriterion } from "../engine/audit/recalculateTotals";
 
 interface Props {
   result: AuditCriterionResult;
@@ -22,17 +23,19 @@ const STATUS_LABEL: Record<string, string> = {
 
 export function AuditCriterionCard({ result, override, onOverrideScore, onReviewerNote, onMarkReviewed, onViewEvidence }: Props) {
   const [expanded, setExpanded] = useState(true);
-  const isOverridden = override && override.overriddenScore !== null && override.overriddenScore !== result.score;
+  const effective = getEffectiveCriterion(result, override);
+  const isOverridden = effective.isOverridden;
 
   return (
-    <div className={`criterion-card criterion-card--${statusClass(result.status)}`}>
+    <div className={`criterion-card criterion-card--${statusClass(effective.status)}`}>
       <button type="button" className="criterion-card__header" onClick={() => setExpanded((v) => !v)}>
         <span className="criterion-card__title">{result.criterion}</span>
         <span className="criterion-card__badges">
-          <span className={`badge badge--status-${statusClass(result.status)}`}>{STATUS_LABEL[result.status]}</span>
+          <span className={`badge badge--status-${statusClass(effective.status)}`}>{STATUS_LABEL[effective.status]}</span>
           <span className="badge badge--risk">{result.risk}</span>
+          {isOverridden && <span className="badge badge--overridden">Reviewer Override</span>}
           <span className="criterion-card__score">
-            {result.score === null ? "—" : result.score}/{result.maxPoints}
+            {effective.score === null ? "—" : effective.score}/{result.maxPoints}
           </span>
           <span className="criterion-card__chevron">{expanded ? "▾" : "▸"}</span>
         </span>
@@ -130,7 +133,9 @@ export function AuditCriterionCard({ result, override, onOverrideScore, onReview
               </label>
               {isOverridden && (
                 <p className="reviewer-override__note">
-                  Original AI score ({result.score}) is retained alongside this override — nothing is overwritten.
+                  Original AI {result.score === null ? `assessment (${STATUS_LABEL[result.status]})` : `score (${result.score})`} is
+                  retained alongside this override — nothing is overwritten. The score above and the overall audit score now
+                  reflect this override.
                 </p>
               )}
             </div>
