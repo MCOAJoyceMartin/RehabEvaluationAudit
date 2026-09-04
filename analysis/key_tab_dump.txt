@@ -1,0 +1,230 @@
+--- ROW 1 ---
+  col1: 'Patient:'
+  col2: 'Jane Doe'
+  col4: 'Documenting Therapist:'
+--- ROW 5 ---
+  col1: 'Date Range:'
+  col2: '1/22-2/22'
+  col4: 'Audit Completed By:'
+--- ROW 6 ---
+  col1: 'Document'
+  col2: 'Question'
+  col3: 'Comment'
+  col4: 'Total Points Earned'
+  col5: 'category opportunity'
+  col8: 'Total:'
+  col9: 1
+--- ROW 7 ---
+  col1: 'Scoring example'
+  col2: "If Document doesn't apply"
+  col3: "If the document doesn't apply such as the case when a patient doesn't is still on caseload and doesn't have a D/C due or was discharged prior to a recert being due change the points earned and opportunity scores to an x."
+  col4: 'x'
+  col5: 'x'
+--- ROW 8 ---
+  col1: 'Scoring example'
+  col2: 'Point breakdown based on frequency present and quality'
+  col3: '0= not present,           1= limited examples                                          2= Typically Present,       3= Always Present'
+  col4: 'x'
+  col5: 'x'
+--- ROW 9 ---
+  col1: 'Evaluation medical review'
+  col2: 'Contains medical history'
+  col3: 'Comprehensive medical history should help justifiy need for services and show change ("see chart" is not acceptable and automatic 0)'
+  col4: 3
+  col5: 3
+--- ROW 10 ---
+  col1: 'Evaluation medical review'
+  col2: 'Contains Medications list'
+  col3: 'List medications that could affect treatment. (See MAR is not acceptable and automatic 0)'
+  col4: 3
+  col5: 3
+--- ROW 11 ---
+  col1: 'Evaluation medical review'
+  col2: 'Completed Timely'
+  col3: 'Same day = 3,     next day =2,                                                          2 days = 1,        >48 hrs = 0'
+  col4: 3
+  col5: 3
+--- ROW 12 ---
+  col1: 'Evaluation'
+  col2: 'Health Status/Reason for Referral '
+  col3: 'Reason for referral needs to show change, falls reported must be in PCC, and must coincide with diagnosis used'
+  col4: 3
+  col5: 3
+--- ROW 13 ---
+  col1: 'Evaluation'
+  col2: 'Objective Tests/ Standardized Test'
+  col3: 'appropriate test =3, everything else =0'
+  col4: 3
+  col5: 3
+--- ROW 14 ---
+  col1: 'Evaluation'
+  col2: 'Therapist Assessment'
+  col3: 'Was there a change from PLOF to CLOF that is noted? Was there pain noted in pain assessment that correlates with goals and diagnosis? Is it documented by nursing in PCC'
+  col4: 3
+  col5: 3
+--- ROW 15 ---
+  col1: 'Evaluation'
+  col2: 'Orders in PCC'
+  col3: 'yes = 3 no = 0'
+  col4: 3
+  col5: 3
+--- ROW 16 ---
+  col1: 'Evaluation'
+  col2: 'Medical Necessity'
+  col3: 'Documentation shows reason services are needed and supported with diagnosis and change in status'
+  col4: 3
+  col5: 3
+--- ROW 17 ---
+  col1: 'Evaluation'
+  col2: 'Assessment Summary'
+  col3: 'Clinical impressions, reason for skilled services and risk factors resummarize justification of services along with any recent falls documented in PCC and change in functional levels. '
+  col4: 4
+  col5: 4
+--- ROW 18 ---
+  col1: 'Plan of Care/ Treatment'
+  col2: 'LTG Justification'
+  col3: 'Long term goals are greater than CLOF and are supported by CPT/diagnosis codes and reason for referral'
+  col4: 3
+  col5: 3
+--- ROW 19 ---
+  col1: 'Plan of Care/ Treatment'
+  col2: 'STG Appropriate and within LTG'
+  col3: 'Short term goals are appropriate and function inside corresponding Long term goals'
+  col4: 3
+  col5: 3
+--- ROW 20 ---
+  col1: 'Progress Notes'
+  col2: 'Completed Timely'
+  col3: 'Same day = 3, within 24 hrs = 2,  same week = 1 anything greater = 0'
+  col4: 3
+  col5: 3
+--- ROW 21 ---
+  col1: 'Progress Notes'
+  col2: "Patient's Response to Treatment"
+  col3: 'Comments should be added for all goals without progress to justify continuated services. ("patient ill hindering participation this week") Barriers should be summarized in progress section of assessment'
+  col4: 3
+  col5: 3
+--- ROW 22 ---
+  col1: 'Progress Notes'
+  col2: 'Modifications in the POC'
+  col3: 'All short term goals have progress or comments explaining barriers. All Long term goals have Current status with short term goals acheivable within the Long term goal.'
+  col4: 3
+  col5: 3
+--- ROW 23 ---
+  col1: 'Progress Notes'
+  col2: 'Treatment frequency '
+  col3: 'Treatment was provided the frequency set by original eval, recert or in accordance with an addendum. Patient refusals are entered on dates that patient was scheduled and chose to not participate with services. '
+  col4: 3
+  col5: 3
+--- ROW 24 ---
+  col1: 'Daily Notes'
+  col2: 'Patient response to treatment'
+  col3: 'Drop downs either not used or supported by patient specific responses to treatment. These should not be repetitive.'
+  col4: 3
+  col5: 3
+--- ROW 25 ---
+  col1: 'Daily Notes'
+  col2: 'Treatment Strategies reflect progression/skill'
+  col3: 'Documentation of skilled services must inlcude measureable and objective information (reps, sets, level of assistance device, %, etc.) as well as specific strategies used to progress the patient within the protocol in order to show progresion towards established goals in the POC.'
+  col4: 3
+  col5: 3
+--- ROW 26 ---
+  col1: 'Daily Notes'
+  col2: 'Reflects attendance/Compliance'
+  col3: "missed visit entered for all scheudled treatments that aren't completed. Communication of missed visit and rescheudling of treatment must be attempted if allowable by days left in the week. "
+  col4: 3
+  col5: 3
+--- ROW 27 ---
+  col1: 'Daily Notes'
+  col2: 'Caregiver Education'
+  col3: 'Caregiver or patient education documented without repetition to address barriers and discharge readiness.'
+  col4: 3
+  col5: 3
+--- ROW 28 ---
+  col1: 'Daily Notes'
+  col2: 'Linked to specfic Goals'
+  col3: 'Treatment provided is linked to a specific goal and within the POC and billed to correct CPT code.'
+  col4: 3
+  col5: 3
+--- ROW 29 ---
+  col1: 'Daily Notes'
+  col2: 'Discontinued when goal met'
+  col3: 'CPT codes billed are working towards an unmet goal within the POC.  (gait training after long term gait goal has been reached and not updated)'
+  col4: 3
+  col5: 3
+--- ROW 30 ---
+  col1: 'Recertification'
+  col2: "LTG's are Justified"
+  col3: 'Long term goals are greater than CLOF and are supported by CPT, diagnosis codes and reason for referral. Goals should be updated or discontinued once met.'
+  col4: 3
+  col5: 3
+--- ROW 31 ---
+  col1: 'Recertification'
+  col2: 'STGs are appropriate'
+  col3: 'Short term goals are appropriate and function inside corresponding Long term goals'
+  col4: 3
+  col5: 3
+--- ROW 32 ---
+  col1: 'Recertification'
+  col2: 'Treatment or Modifications relevant to impairment'
+  col3: 'Modifications are made that are in line with reason for referral and original POC that help justify continuation of treatment. '
+  col4: 3
+  col5: 3
+--- ROW 33 ---
+  col1: 'Recertification'
+  col2: 'Treatment Related to goals'
+  col3: 'Drop downs either not used or supported by patient specific responses to treatment. These should not be repetitive.'
+  col4: 3
+  col5: 3
+--- ROW 34 ---
+  col1: 'Recertification'
+  col2: 'Amount/Freq/Duration'
+  col3: 'Frequency updated to reflect services provided over evaluation covered dates. If the frequency is changed justification is required in the continued skill section of justification of continued services.'
+  col4: 3
+  col5: 3
+--- ROW 35 ---
+  col1: 'Recertification'
+  col2: 'Justification for continued services'
+  col3: 'Summary of assessment levels including barriers preventing progress, changes since evaluation, difference betwee PLOF and CLOF, and standardized test scores. A breif summary of a functional outcome expected and why it is needed as a result of skilled intervention. '
+  col4: 3
+  col5: 3
+--- ROW 36 ---
+  col1: 'Recertification'
+  col2: 'orders in PCC'
+  col3: 'yes = 3 no = 0'
+  col4: 3
+  col5: 3
+--- ROW 37 ---
+  col1: 'Recertification'
+  col2: 'Completed Timely'
+  col3: 'Same day = 3, within 24 hours =2, within 48 hours = 1, all greater = 0'
+  col4: 3
+  col5: 3
+--- ROW 38 ---
+  col1: 'Discharge Summary'
+  col2: 'All Goals addressed'
+  col3: 'Have all short and long term goals been addressed and justification for goals not met'
+  col4: 3
+  col5: 3
+--- ROW 39 ---
+  col1: 'Discharge Summary'
+  col2: 'Reason for Discharge'
+  col3: 'If d/c to home caregiver education and patients status for safe d/c clear. If long term reason for d/c clearly present'
+  col4: 3
+  col5: 3
+--- ROW 40 ---
+  col1: 'Discharge Summary'
+  col2: 'Completed Timely'
+  col3: 'document completed timely '
+  col4: 3
+  col5: 3
+--- ROW 41 ---
+  col1: 'Discharge Summary'
+  col2: 'Orders in PCC'
+  col3: 'yes = 3 no = 0'
+  col4: 3
+  col5: 3
+--- ROW 42 ---
+  col1: 'Total'
+  col4: 100
+  col5: 100

@@ -1,0 +1,200 @@
+--- ROW 1 ---
+  col1: 'Patient:'
+  col2: 'Doris Whitlock'
+  col4: 'Documenting Therapist:'
+  col5: 'Deepika Meka, PT (eval, PN, DC); Vishal Bhavnagari, PT (TENs)'
+--- ROW 5 ---
+  col1: 'Date Range:'
+  col2: '5/13-5/27/25'
+  col4: 'Audit Completed By:'
+--- ROW 6 ---
+  col1: 'Document'
+  col2: 'Question'
+  col3: 'Comment'
+  col4: 'Total Points Earned'
+  col5: 'category opportunity'
+  col8: 'Total:'
+  col9: 0.6857142857142857
+--- ROW 7 ---
+  col1: 'Evaluation medical review'
+  col2: 'Contains medical history'
+  col4: 3
+  col5: 3
+--- ROW 8 ---
+  col1: 'Evaluation medical review'
+  col2: 'Contains Medications list'
+  col3: 'Verapamil'
+  col4: 3
+  col5: 3
+--- ROW 9 ---
+  col1: 'Evaluation medical review'
+  col2: 'Completed Timely'
+  col3: '5/14, completed 5/15'
+  col4: 2
+  col5: 3
+--- ROW 10 ---
+  col1: 'Evaluation'
+  col2: 'Health Status/Reason for Referral '
+  col4: 3
+  col5: 3
+--- ROW 11 ---
+  col1: 'Evaluation'
+  col2: 'Objective Tests/ Standardized Test'
+  col3: 'Sitting Balance = NT'
+  col4: 0
+  col5: 3
+--- ROW 12 ---
+  col1: 'Evaluation'
+  col2: 'Therapist Assessment'
+  col4: 3
+  col5: 3
+--- ROW 13 ---
+  col1: 'Evaluation'
+  col2: 'Orders in PCC'
+  col3: 'Clarification order 6x/wk'
+  col4: 3
+  col5: 3
+--- ROW 14 ---
+  col1: 'Evaluation'
+  col2: 'Medical Necessity'
+  col4: 3
+  col5: 3
+--- ROW 15 ---
+  col1: 'Evaluation'
+  col2: 'Assessment Summary'
+  col4: 4
+  col5: 4
+--- ROW 16 ---
+  col1: 'Plan of Care/ Treatment'
+  col2: 'LTG Justification'
+  col4: 3
+  col5: 3
+--- ROW 17 ---
+  col1: 'Plan of Care/ Treatment'
+  col2: 'STG Appropriate and within LTG'
+  col4: 3
+  col5: 3
+--- ROW 18 ---
+  col1: 'Progress Notes'
+  col2: 'Completed Timely'
+  col3: '5/21, completed 6/2'
+  col4: 0
+  col5: 3
+--- ROW 19 ---
+  col1: 'Progress Notes'
+  col2: "Patient's Response to Treatment"
+  col3: 'Barriers should be summarized in Patient Progress section under Assesment; canned phrases included without patient specific responses added'
+  col4: 1
+  col5: 3
+--- ROW 20 ---
+  col1: 'Progress Notes'
+  col2: 'Modifications in the POC'
+  col5: 3
+--- ROW 21 ---
+  col1: 'Progress Notes'
+  col2: 'Treatment frequency '
+  col3: 'POC written for 6x/wk but only seen 5x during first week; seen 3x during second week '
+  col4: 0
+  col5: 3
+--- ROW 22 ---
+  col1: 'Daily Notes'
+  col2: 'Patient response to treatment'
+  col3: 'Varies amongst all clinicians on record; M. Sanchez with the most variation and patient specific responses; other clinicians used canned phrases and are repetitive, without the addition of patient specifics.'
+  col4: 1
+  col5: 3
+--- ROW 23 ---
+  col1: 'Daily Notes'
+  col2: 'Treatment Strategies reflect progression/skill'
+  col3: '5/25 and 5/26 TENs from V. Bhavnagari are copy/pasted (and eSigned late at night - was he on the clock at this time?); most other TENs are completed by PTAs; encourage all clinicians to include what they provided/modified/guided, etc. to denote skilled interventions. There is a lot of "patient completed" or "patient utilized Nu Step"'
+  col4: 1
+  col5: 3
+--- ROW 24 ---
+  col1: 'Daily Notes'
+  col2: 'Reflects attendance/Compliance'
+  col3: 'No documented missed visits, however, patient not seen (or left off schedule?) between 5/21-5/24.'
+  col4: 2
+  col5: 3
+--- ROW 25 ---
+  col1: 'Daily Notes'
+  col2: 'Caregiver Education'
+  col3: 'Pt education documented by PTA'
+  col4: 3
+  col5: 3
+--- ROW 26 ---
+  col1: 'Daily Notes'
+  col2: 'Linked to specfic Goals'
+  col4: 3
+  col5: 3
+--- ROW 27 ---
+  col1: 'Daily Notes'
+  col2: 'Discontinued when goal met'
+  col3: 'NA- no goals met'
+  col4: 'x'
+  col5: 'x'
+--- ROW 28 ---
+  col1: 'Recertification'
+  col2: "LTG's are Justified"
+  col4: 'x'
+  col5: 'x'
+--- ROW 29 ---
+  col1: 'Recertification'
+  col2: 'STGs are appropriate'
+  col4: 'x'
+  col5: 'x'
+--- ROW 30 ---
+  col1: 'Recertification'
+  col2: 'Treatment or Modifications relevant to impairment'
+  col4: 'x'
+  col5: 'x'
+--- ROW 31 ---
+  col1: 'Recertification'
+  col2: 'Treatment Related to goals'
+  col4: 'x'
+  col5: 'x'
+--- ROW 32 ---
+  col1: 'Recertification'
+  col2: 'Amount/Freq/Duration'
+  col4: 'x'
+  col5: 'x'
+--- ROW 33 ---
+  col1: 'Recertification'
+  col2: 'Justification for continued services'
+  col4: 'x'
+  col5: 'x'
+--- ROW 34 ---
+  col1: 'Recertification'
+  col2: 'orders in PCC'
+  col4: 'x'
+  col5: 'x'
+--- ROW 35 ---
+  col1: 'Recertification'
+  col2: 'Completed Timely'
+  col4: 'x'
+  col5: 'x'
+--- ROW 36 ---
+  col1: 'Discharge Summary'
+  col2: 'All Goals addressed'
+  col4: 3
+  col5: 3
+--- ROW 37 ---
+  col1: 'Discharge Summary'
+  col2: 'Reason for Discharge'
+  col3: 'Per physician case manager'
+  col4: 3
+  col5: 3
+--- ROW 38 ---
+  col1: 'Discharge Summary'
+  col2: 'Completed Timely'
+  col3: '5/27, completed 6/2'
+  col4: 1
+  col5: 3
+--- ROW 39 ---
+  col1: 'Discharge Summary'
+  col2: 'Orders in PCC'
+  col3: 'NA'
+  col4: 'x'
+  col5: 'x'
+--- ROW 40 ---
+  col1: 'Total'
+  col4: 48
+  col5: 70
