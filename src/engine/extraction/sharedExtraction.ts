@@ -37,7 +37,23 @@ export function extractDiagnoses(pages: PageText[]): DiagnosisEntry[] {
   return diagnoses;
 }
 
-const SIG_RE_PARTS = "(.+?),?\\s*(PT|OT|SLP|PTA|COTA|RPT)\\.?\\s+([\\d/]+\\s+[\\d:]+\\s*(?:AM|PM)?\\s*[A-Z]{2,4})";
+/**
+ * Credential alternation for a signature block. This list was originally
+ * PT|OT|SLP|PTA|COTA|RPT — which silently dropped every signature whose
+ * credential wasn't an exact match, most notably "OTR" (Occupational
+ * Therapist, Registered) and "OTA"/"OTR/L", all standard OT credentials
+ * that are at least as common as plain "OT". A signer with an unlisted
+ * credential doesn't fail loudly — extractOriginalSignature just returns
+ * null, which downstream silently becomes "Not Found" for the evaluator,
+ * completion date, etc. (confirmed root cause of a real-facility audit
+ * where Evaluation/Daily Notes/Discharge all showed "Not Found" because
+ * every signer there was credentialed "OTR" or "OTA"). Longer/more-specific
+ * options don't need to precede shorter ones (e.g. "OTR" before "OT") for
+ * correctness — regex backtracking retries every alternative at the same
+ * position — but keeping the full real-world set here is what matters.
+ */
+const SIG_RE_PARTS =
+  "(.+?),?\\s*(PT|DPT|PTA|OTR\\/L|OTR|OTA|COTA\\/L|COTA|OT|CCC-SLP|SLP-CCC|SLP|RPT|MOTR|MOT)\\.?\\s+([\\d/]+\\s+[\\d:]+\\s*(?:AM|PM)?\\s*[A-Z]{2,4})";
 
 function cleanName(raw: string): string {
   return raw.replace(/[;,]+$/, "").trim();

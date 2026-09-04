@@ -5,6 +5,7 @@ import { NOT_FOUND } from "../../types/audit";
 import { detectDisciplineFromHeading } from "../pdf/DocumentClassifier";
 import { extractRows, parseInlineKeyValues } from "./rowExtraction";
 import { parseRawGoals } from "./GoalBlockParser";
+import { extractOriginalSignature } from "./sharedExtraction";
 import type { DiagnosisEntry, ExtractedEvaluation, TreatmentApproachEntry } from "./extractionTypes";
 
 /**
@@ -96,11 +97,15 @@ export function extractEvaluation(evaluationPages: PageText[]): ExtractedEvaluat
   void certRange;
 
   // ---- Signatures ----------------------------------------------------------
-  const therapistSigMatch = fullText.match(
-    /Original Signature:\s*Electronically signed by\s+(.+?),?\s*(PT|OT|SLP|PTA|COTA|RPT)\.?\s+([\d/]+\s+[\d:]+\s*(?:AM|PM)?\s*[A-Z]{2,4})/i,
-  );
-  const therapistName = notFound(therapistSigMatch?.[1]);
-  const therapistSignatureDate = notFound(therapistSigMatch?.[3]);
+  // Uses the shared signature parser (sharedExtraction.ts) rather than its
+  // own copy of this regex — this used to be a separate, hand-duplicated
+  // pattern here with a narrower credential list that missed "OTR"/"OTA"
+  // signers entirely (silently producing "Not Found" evaluator/completion
+  // date for any evaluation signed by one). Keeping one shared, tested
+  // pattern means a credential fix like that only has to happen once.
+  const therapistSig = extractOriginalSignature(fullText);
+  const therapistName = notFound(therapistSig?.name);
+  const therapistSignatureDate = notFound(therapistSig?.date);
   const therapistSignaturePage = findEvidencePage(evaluationPages, "Original Signature:");
   const planOfTreatmentPage = findEvidencePage(evaluationPages, "Frequency:");
 
