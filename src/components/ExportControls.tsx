@@ -13,7 +13,12 @@ interface Props {
 }
 
 type PrintStatus = { state: "idle" } | { state: "building" } | { state: "error"; message: string };
-type SaveStatus = { state: "idle" } | { state: "sending" } | { state: "success" } | { state: "error"; message: string };
+type SaveStatus =
+  | { state: "idle" }
+  | { state: "sending" }
+  | { state: "success" }
+  | { state: "sent-unconfirmed" }
+  | { state: "error"; message: string };
 
 function safeFileName(report: EpisodeAuditReport): string {
   return (report.batchPatient.name || "patient").toString().replace(/[^a-z0-9]+/gi, "_").toLowerCase() || "report";
@@ -76,8 +81,8 @@ export function ExportControls({ report, overrides, onNewAudit }: Props) {
   const handleSaveToOneDrive = async () => {
     setSaveStatus({ state: "sending" });
     try {
-      await sendReportToOneDrive(report, overrides);
-      setSaveStatus({ state: "success" });
+      const result = await sendReportToOneDrive(report, overrides);
+      setSaveStatus(result.confirmed ? { state: "success" } : { state: "sent-unconfirmed" });
     } catch (err) {
       const message =
         err instanceof SaveToOneDriveNotConfiguredError
@@ -107,6 +112,12 @@ export function ExportControls({ report, overrides, onNewAudit }: Props) {
       )}
       {saveStatus.state === "success" && (
         <p className="export-status export-status--success">Sent — check the purehlth.com mailbox / OneDrive shortly.</p>
+      )}
+      {saveStatus.state === "sent-unconfirmed" && (
+        <p className="export-status export-status--success">
+          Sent, but the browser couldn't confirm the response (this happens occasionally with Google's relay). Check the
+          purehlth.com mailbox / OneDrive in a few minutes — if it's not there, try again.
+        </p>
       )}
       {saveStatus.state === "error" && (
         <p className="export-status export-status--error">{saveStatus.message}</p>

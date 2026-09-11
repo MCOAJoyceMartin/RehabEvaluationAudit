@@ -30,6 +30,14 @@ function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
+/** Result of a send attempt. `confirmed: true` means the browser actually
+ *  read back a real response from the script (so a thrown error for a
+ *  non-confirmed attempt is a genuine unknown, not a proven failure — see
+ *  the CORS note below). */
+export interface SendResult {
+  confirmed: boolean;
+}
+
 /**
  * Builds the report as a PDF client-side and POSTs it to the configured
  * Google Apps Script Web App endpoint (see src/config/integrations.ts),
@@ -43,11 +51,33 @@ function blobToBase64(blob: Blob): Promise<string> {
  * preflight) is required to avoid the browser blocking the call outright.
  * The Apps Script side still receives valid JSON text and parses it itself
  * — see the doPost() script in docs/POWER_AUTOMATE_SETUP.md.
+ *
+ * CORS reliability note: even with a correctly configured deployment (right
+ * URL, right secret, "Anyone" access), Google's execution redirect
+ * (script.google.com/.../exec -> script.googleusercontent.com/macros/echo)
+ * has been observed to intermittently omit CORS headers on the final
+ * response. When that happens the browser refuses to let JS read the
+ * response at all and `fetch()` throws a generic network TypeError — this
+ * is indistinguishable, from here, from the request never having reached
+ * Google in the first place, and it can happen even when the exact same
+ * URL/secret worked moments earlier from another attempt. Confirmed by
+ * reproducing it directly: a normal ("cors") fetch to a known-good,
+ * verified-correct deployment threw, while the identical request sent with
+ * `mode: "no-cors"` completed (opaque response, unreadable but not
+ * network-blocked) — proving the request did reach Google either way.
+ *
+ * So: try the normal request first (it lets us surface a REAL app-level
+ * error — a bad secret, a missing field — with a specific message). Only
+ * if that throws a generic (non-Error-subclass) failure do we retry once
+ * with `no-cors` as a fire-and-forget — we can't read whether Apps Script
+ * accepted it, so we report `confirmed: false` and the caller shows a
+ * softer "sent, but couldn't confirm — check your inbox" message instead
+ * of a scary HTTP-status error that isn't actually about the deployment.
  */
 export async function sendReportToOneDrive(
   report: EpisodeAuditReport,
   overrides: Record<string, ReviewerOverride>,
-): Promise<void> {
+): Promise<SendResult> {
   if (!SAVE_SCRIPT_URL.trim()) {
     throw new SaveToOneDriveNotConfiguredError();
   }
@@ -68,26 +98,40 @@ export async function sendReportToOneDrive(
     disciplines: report.disciplineAudits.map((d) => d.discipline),
     generatedAt: new Date().toISOString(),
   };
+  const body = JSON.stringify(payload);
+  const headers = { "Content-Type": "text/plain;charset=utf-8" };
 
-  const res = await fetch(SAVE_SCRIPT_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(payload),
-  });
+  let res: Response;
+  try {
+    res = await fetch(SAVE_SCRIPT_URL, { method: "POST", headers, body });
+  } catch {
+    // Generic network/CORS-layer failure — see the CORS reliability note
+    // above. Retry once, fire-and-forget, so the email still has a chance
+    // to send even though we can no longer confirm it from here.
+    try {
+      await fetch(SAVE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers, body });
+    } catch {
+      throw new Error(
+        "Save to OneDrive couldn't reach the Apps Script relay at all (a network-level failure, not a rejection from the script). Check your connection and try again.",
+      );
+    }
+    return { confirmed: false };
+  }
 
   if (!res.ok) {
     throw new Error(`Save to OneDrive failed (HTTP ${res.status}). Check the Apps Script deployment.`);
   }
 
-  let body: { ok?: boolean; error?: string } = {};
+  let responseBody: { ok?: boolean; error?: string } = {};
   try {
-    body = await res.json();
+    responseBody = await res.json();
   } catch {
     // Some Apps Script deployments/redirects can make the body hard to
     // read from the browser even on success — a non-throwing fetch with
     // an ok HTTP status is treated as success either way.
   }
-  if (body.ok === false) {
-    throw new Error(body.error || "Save to OneDrive failed for an unknown reason.");
+  if (responseBody.ok === false) {
+    throw new Error(responseBody.error || "Save to OneDrive failed for an unknown reason.");
   }
+  return { confirmed: true };
 }
