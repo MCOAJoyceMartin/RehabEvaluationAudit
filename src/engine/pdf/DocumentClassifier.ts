@@ -24,7 +24,7 @@ interface HeadingRule {
 }
 
 const HEADING_RULES: HeadingRule[] = [
-  { pattern: /\b(PT|OT|Physical Therapy|Occupational Therapy|Speech[- ]Language Pathology|SLP)\b[^\n]*\bEvaluation\s*&?\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
+  { pattern: /\b(PT|OT|Physical Therapy|Occupational Therapy|Speech[- ]Language Pathology|Speech Therapy|SLP|ST)\b[^\n]*\bEvaluation\s*&?\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
   { pattern: /\bEvaluation\s*&\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
   { pattern: /\bRe-?certification\b/i, documentType: "RECERTIFICATION" },
   { pattern: /\bTherapy Progress Report\b/i, documentType: "PROGRESS_REPORT" },
@@ -45,6 +45,11 @@ const DISCIPLINE_RULES: { pattern: RegExp; discipline: Discipline }[] = [
   { pattern: /\bPhysical Therapy\b|\bPT\b/i, discipline: "PT" },
   { pattern: /\bOccupational Therapy\b|\bOT\b/i, discipline: "OT" },
   { pattern: /\bSpeech[- ]Language Pathology\b|\bSLP\b|\bSpeech Therapy\b/i, discipline: "SLP" },
+  // "ST" is the other common label for speech therapy in these exports
+  // ("ST Evaluation & Plan of Treatment"). Deliberately case-SENSITIVE and
+  // only when followed by a document-title word: case-insensitively it would
+  // false-match "St." in street addresses / saint names in the page heading.
+  { pattern: /\bST(?=\s+(?:Evaluation|Therapy|Discharge|Progress|Treatment|Daily|Re-?cert))/, discipline: "SLP" },
 ];
 
 export function detectDisciplineFromText(text: string): Discipline | null {

@@ -280,7 +280,7 @@ const evalOrdersInPcc: Evaluator = ({ extracted }, criterion) => {
     { externalValidation: { required: true, reason: criterion.pcc!.reasonTemplate, recommendedAction: criterion.pcc!.recommendedAction } });
 };
 
-const RISK_WITHOUT_TREATMENT_RE = /at risk for|risk of|without (skilled )?(pt|ot|slp|therapy|intervention)|further (decline|caregiver dependence)|return to (prior|community|home)/i;
+const RISK_WITHOUT_TREATMENT_RE = /at risk for|risk of|without (skilled )?(pt|ot|slp|st|therapy|intervention)|further (decline|caregiver dependence)|return to (prior|community|home)/i;
 const BOILERPLATE_ONLY_RE = /^(skilled therapy is medically necessary\.?|medically necessary\.?)$/i;
 
 const evalMedicalNecessity: Evaluator = ({ extracted, functionalChange }, criterion) => {

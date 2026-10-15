@@ -53,7 +53,7 @@ export function extractDiagnoses(pages: PageText[]): DiagnosisEntry[] {
  * position — but keeping the full real-world set here is what matters.
  */
 const SIG_RE_PARTS =
-  "(.+?),?\\s*(PT|DPT|PTA|OTR\\/L|OTR|OTA|COTA\\/L|COTA|OT|CCC-SLP|SLP-CCC|SLP|RPT|MOTR|MOT)\\.?\\s+([\\d/]+\\s+[\\d:]+\\s*(?:AM|PM)?\\s*[A-Z]{2,4})";
+  "(.+?)(?:,\\s*|\\s+)(PT|DPT|PTA|OTR\\/L|OTR|OTA|COTA\\/L|COTA|OT|CCC-SLP|SLP-CCC|SLP|ST|SLPA|STA|RPT|MOTR|MOT)\\.?\\s+([\\d/]+\\s+[\\d:]+\\s*(?:AM|PM)?\\s*[A-Z]{2,4})";
 
 function cleanName(raw: string): string {
   return raw.replace(/[;,]+$/, "").trim();

@@ -146,6 +146,16 @@ export const STANDARDIZED_TESTS: Record<Discipline, RegExp[]> = {
     /\bMASA\b/i,
     /\bFOIS\b/i,
     /\bEAT-?10\b/i,
+    /\bCLQT\b|\bCognitive Linguistic Quick Test\b/i,
+    /\bBoston Naming\b/i,
+    /\bWestern Aphasia Battery\b|\bWAB\b/i,
+    /\bMann Assessment of Swallowing\b/i,
+    /\bYale Swallow\b/i,
+    /\bAllen Cognitive Level\b/i,
+    /\bBIMS\b|\bBrief Interview for Mental Status\b/i,
+    /\bSLUMS\b|\bSt\.? Louis University Mental Status\b/i,
+    /\bFunctional Communication Measure\b|\bNOMS\b/i,
+    /\bDysphagia Outcome\b|\bDOSS\b/i,
   ],
 };
 

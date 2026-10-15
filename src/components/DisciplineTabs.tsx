@@ -9,7 +9,7 @@ interface Props {
 const DISCIPLINE_LABEL: Record<string, string> = {
   PT: "Physical Therapy",
   OT: "Occupational Therapy",
-  SLP: "Speech-Language Pathology",
+  SLP: "Speech-Language Pathology (SLP/ST)",
 };
 
 /**
