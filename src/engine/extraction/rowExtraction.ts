@@ -26,6 +26,13 @@ export const SECTION_HEADERS: string[] = [
   "Musculoskeletal System Assessment",
   "Other System/Condition Assessment",
   "Objective Tests and Measures",
+  // SLP evaluation template section headings (seen on a real NetHealth SLP
+  // evaluation) — recognized so their content isn't glued onto the previous
+  // row, and so the SLP standardized-test section is extracted.
+  "Cognitive-Communicative Skills Overview",
+  "Oral Peripheral Exam",
+  "Laryngeal / Pharyngeal Performance",
+  "Objective Tests - Results and Interpretation",
   "Assessment Summary",
   "Exercise Prescription",
 ];
@@ -68,6 +75,8 @@ export const ROW_LABELS: string[] = [
   "Cognition",
   "Reason for Therapy",
   "Complexities",
+  "Standardized",
+  "Oral Exam",
   "Intervention Modes",
   "Purpose",
   "Method",
@@ -101,7 +110,7 @@ const IGNORED_LINE_PATTERNS: RegExp[] = [
   /^ST (Evaluation|Therapy|Discharge)/,
   /^PT (Evaluation|Therapy|Discharge)/i,
   /^OT (Evaluation|Therapy|Discharge)/i,
-  /^(PT|OT|SLP|ST) Evaluation\s*&\s*Plan of Treatment$/i,
+  /^(PT|OT|SLP|ST) Evaluation\s*(?:&|and)\s*Plan of Treatment$/i,
   /^Provider:/i,
   /^NPI:/i,
   /^Patient:/i,

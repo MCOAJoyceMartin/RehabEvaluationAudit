@@ -238,6 +238,21 @@ export function extractEvaluation(evaluationPages: PageText[]): ExtractedEvaluat
     return { name, result, evidence: [ev(row.page, "Objective Tests and Measures", `${row.rowLabel} ${row.text.replace(/\n/g, " ")}`)] };
   });
 
+  // SLP evaluations put standardized testing in its own section as one
+  // narrative row ("Standardized Testing Results: SLUMS score of 14/30 ...")
+  // rather than the PT/OT "Test/<name> = <result>" rows above.
+  for (const row of rows.filter((r) => r.section === "Objective Tests - Results and Interpretation")) {
+    const narrative = row.text.replace(/\s+/g, " ").trim().replace(/^(?:Standardized\s+)?(?:Standardized\s+)?Testing Results:\s*/i, "").trim();
+    if (!narrative) continue;
+    const score =
+      narrative.match(/\b\d+(?:\.\d+)?\s*\/\s*\d+\b/) ?? narrative.match(/\bscore(?:d)?\s*(?:of|=|:)?\s*\d+(?:\.\d+)?\b/i);
+    objectiveTests.push({
+      name: narrative,
+      result: score ? score[0] : narrative,
+      evidence: [ev(row.page, "Objective Tests - Results and Interpretation", `${row.rowLabel} ${narrative}`)],
+    });
+  }
+
   return {
     discipline,
     facility,

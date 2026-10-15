@@ -15,6 +15,8 @@ eq("Speech Therapy", detectDisciplineFromText("Speech Therapy Progress Report"),
 eq("SLP full name", detectDisciplineFromText("Speech-Language Pathology Discharge Summary"), "SLP");
 eq("ST discharge", detectDisciplineFromText("ST Discharge Summary"), "SLP");
 eq("street St. not ST", detectDisciplineFromText("Princeton Health 123 Main St Springfield"), null);
+eq("'and' title is an evaluation page", /\bEvaluation\s*(?:&|and)?\s*Plan of Treatment\b/i.test("SLP Evaluation and Plan of Treatment"), true);
+eq("name with M.S. degree", extractOriginalSignature("Original Signature: Electronically signed by Rachel Cereceros-Felix, M.S. CCC-SLP 9/13/2026 12:50:55 PM CDT")?.name, "Rachel Cereceros-Felix");
 eq("PT still PT", detectDisciplineFromText("PT Evaluation & Plan of Treatment"), "PT");
 eq("OT still OT", detectDisciplineFromText("OT Evaluation & Plan of Treatment"), "OT");
 // signatures

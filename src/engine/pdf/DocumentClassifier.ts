@@ -24,8 +24,8 @@ interface HeadingRule {
 }
 
 const HEADING_RULES: HeadingRule[] = [
-  { pattern: /\b(PT|OT|Physical Therapy|Occupational Therapy|Speech[- ]Language Pathology|Speech Therapy|SLP|ST)\b[^\n]*\bEvaluation\s*&?\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
-  { pattern: /\bEvaluation\s*&\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
+  { pattern: /\b(PT|OT|Physical Therapy|Occupational Therapy|Speech[- ]Language Pathology|Speech Therapy|SLP|ST)\b[^\n]*\bEvaluation\s*(?:&|and)?\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
+  { pattern: /\bEvaluation\s*(?:&|and)\s*Plan of Treatment\b/i, documentType: "EVALUATION" },
   { pattern: /\bRe-?certification\b/i, documentType: "RECERTIFICATION" },
   { pattern: /\bTherapy Progress Report\b/i, documentType: "PROGRESS_REPORT" },
   { pattern: /\bProgress (Report|Note)\b/i, documentType: "PROGRESS_REPORT" },

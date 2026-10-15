@@ -55,8 +55,12 @@ export function extractDiagnoses(pages: PageText[]): DiagnosisEntry[] {
 const SIG_RE_PARTS =
   "(.+?)(?:,\\s*|\\s+)(PT|DPT|PTA|OTR\\/L|OTR|OTA|COTA\\/L|COTA|OT|CCC-SLP|SLP-CCC|SLP|ST|SLPA|STA|RPT|MOTR|MOT)\\.?\\s+([\\d/]+\\s+[\\d:]+\\s*(?:AM|PM)?\\s*[A-Z]{2,4})";
 
+/** Academic/professional degrees some vendors print between the name and the
+ *  credential ("Rachel Cereceros-Felix, M.S. CCC-SLP") — not part of the name. */
+const TRAILING_DEGREE_RE = /[,\s]+(?:M\.?\s?S\.?|M\.?\s?A\.?|M\.?\s?Ed\.?|Ph\.?\s?D\.?|M\.?\s?O\.?\s?T\.?|D\.?\s?P\.?\s?T\.?|OTD|CScD|SLPD)\.?$/i;
+
 function cleanName(raw: string): string {
-  return raw.replace(/[;,]+$/, "").trim();
+  return raw.replace(/[;,]+$/, "").replace(TRAILING_DEGREE_RE, "").replace(/[;,]+$/, "").trim();
 }
 
 /** "Original Signature:  Electronically signed by Maurice Chua, PT  5/13/2026 12:01:49 PM EDT" */

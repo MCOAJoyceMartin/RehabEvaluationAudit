@@ -244,8 +244,19 @@ const evalObjectiveTest: Evaluator = ({ extracted, discipline }, criterion) => {
     "Administer a discipline-appropriate standardized measure to completion, or document the specific clinical reason it could not be completed.", criterion.id, criterion.maxPoints);
 };
 
-const evalTherapistAssessment: Evaluator = ({ extracted, functionalChange }, criterion) => {
+const evalTherapistAssessment: Evaluator = ({ extracted, functionalChange, discipline }, criterion) => {
   const assessed = functionalChange.filter((r) => r.change === "Declined" || r.change === "Improved");
+  // The automated PLOF-to-CLOF comparison ranks mobility/ADL assistance levels
+  // (the PT/OT template). A speech-language evaluation documents prior vs.
+  // current function as cognition/communication/swallowing narrative, which
+  // that ladder can't rank — so a zero here would be the engine's blind spot,
+  // not evidence of poor documentation. Hand it to the reviewer instead of
+  // issuing a false FAIL (the reviewer can still enter a score as an override).
+  if (discipline === "SLP" && assessed.length === 0) {
+    return base(null, "UNABLE_TO_VALIDATE", "LOW", "DERIVED", [],
+      "Automated PLOF-to-CLOF scoring is not yet available for speech-language evaluations (their prior/current function is narrative cognition, communication and swallowing rather than assistance levels). Reviewer should compare the documented prior level of function with the current findings and enter a score.",
+      "Reviewer to confirm the evaluation documents a clear prior-level vs. current-level comparison for communication, cognition and/or swallowing.", criterion.id, criterion.maxPoints);
+  }
   const evidence: EvidenceRef[] = functionalChange.filter((r) => r.change !== "Not Assessed").slice(0, 3).flatMap((r) => extracted.clofFunctionalItems.find((i) => i.label === r.area)?.evidence ?? []);
   const painNoted = extracted.painStatement.text !== NOT_FOUND && /\byes\b/i.test(extracted.painStatement.text);
   const painCorrelationOk = !painNoted || /pain/i.test(extracted.reasonForTherapy.text) || /pain/i.test(extracted.medicalHistory.text);
